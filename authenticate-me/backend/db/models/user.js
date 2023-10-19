@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static async login({ credential, password }) {
-      const Op = sequelize.Op;
+      const { Op } = require('sequelize');
       const user = await User.scope("loginUser").findOne({
         where: { [Op.or]: [ { username: credential }, { email: credential } ] }
       });
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         email,
         hashedPassword
       });
-      return User.scope("currentUser").findByPk(user.id);
+      return await User.scope("currentUser").findByPk(user.id);
     }
 
     static associate(models) {
